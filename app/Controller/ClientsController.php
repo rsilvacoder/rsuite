@@ -14,10 +14,6 @@ class ClientsController extends AppController {
  */
 	public function admin_index() {
 
-		$domains = $this->Client->find('all', array('fields'=>array('DISTINCT Client.domain'),'limit'=>'30'));
-
-		$this->set('domains', $domains);
-
 		$this->Client->recursive = 0;
 		$this->set('clients', $this->paginate());
 	}
@@ -99,31 +95,59 @@ class ClientsController extends AppController {
 		$this->redirect(array('action' => 'index'));
 	}
 
-	public function admin_import() {
+	public function admin_import($import='false') {
 
-		if(!empty($this->request['data']['Import']['emails'])) {
+		set_time_limit(0);
 
-			$this->Session->setFlash(__('The clients imported'));
+		if ($import == 'false') {
 
-			$emails = explode("\n",$this->request['data']['Import']['emails']);
+			$path = "/Users/r/Sites/lamp/public_html/app/webroot/listas/";
+			$diretorio = dir($path);
 
-			foreach ($emails as $email) {
-
-				$email = trim($email);
-
-				if(preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/',$email)) {
-
-					$isEmail = $this->Client->findByEmail($email);
-
-					if(!$isEmail) {
-
-						$save['Client']['email']=$email;
-
-						$this->Client->create();
-						$this->Client->save($save);
-					}
+			while($arquivo = $diretorio->read()) {
+				if($arquivo != "." AND $arquivo != ".."){
+					$arquivos[] = $arquivo;
 				}
 			}
+			$diretorio -> close();
+
+			$this->set('arquivos',$arquivos);
+		}else if($import=='true'){
+
+			system("chmod 777 /Users/r/Sites/lamp/public_html/app/webroot/listas/*");
+
+			$path = "/Users/r/Sites/lamp/public_html/app/webroot/listas/";
+			$diretorio = dir($path);
+
+			while($arquivo = $diretorio->read()) {
+				if($arquivo != "." AND $arquivo != ".."){
+					
+					$arquivo_import = $path.$arquivo;
+					$emails = explode("\n", file_get_contents($arquivo_import));
+
+					foreach ($emails as $email) {
+
+						$email = trim($email);
+
+						$isEmail = $this->Client->findByEmail($email);
+
+						if(!$isEmail) {
+
+							$save['Client']['email']=$email;
+
+							$this->Client->create();
+							$this->Client->save($save);
+						}
+					}
+
+					system("rm -rf ".$arquivo_import);
+
+					$arquivos[] = $arquivo;
+				}
+			}
+			$diretorio -> close();
+
+			$this->set('arquivos',$arquivos);
 		}
 	}
 
@@ -163,7 +187,7 @@ class ClientsController extends AppController {
 
 	public function admin_sendvull($campaign_id=0) {
 
-		$vull = $this->Client->query("SELECT Vull.chave FROM infos Vull WHERE Vull.status != 1 ORDER BY rand() LIMIT 1");
+		$vull = $this->Client->query("SELECT Vull.chave FROM infos Vull WHERE Vull.status != 1 AND active=1 ORDER BY rand() LIMIT 1");
 
 		echo $vull[0]['Vull']['chave'];
 
@@ -178,7 +202,7 @@ class ClientsController extends AppController {
 
 		//$clients = $this->Client->query("SELECT distinct(Sent.client_id), Client.email, Client.id FROM clients Client LEFT JOIN sents as Sent ON Sent.`client_id` = Client.id AND campaign_id = 1 WHERE Sent.client_id IS NULL ORDER BY rand(Client.id) LIMIT 10");
 
-		$clients = $this->Client->find('all',array("conditions" => array("Client.active" => 1),"limit" => "400","order"=>"rand()"));
+		$clients = $this->Client->find('all',array("conditions" => array("Client.active" => 1),"limit" => "600","order"=>"rand()"));
 
 		foreach ($clients as $client) {
 
@@ -239,5 +263,9 @@ class ClientsController extends AppController {
 		echo "Ok";
 
 		die();
+	}
+
+	public function admin_startemail() {
+		
 	}
 }

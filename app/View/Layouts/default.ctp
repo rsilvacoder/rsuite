@@ -54,10 +54,12 @@ header("Access-Control-Allow-Origin: http://agu114.co.kr");
 	      <div class="nav-collapse">
 	        <ul class="nav">
 	          <li><a href="/admin/clients">CRM</a></li>
-	          <li><a href="#">SCANS</a></li>
-	          <li><a href="#">GRABS</a></li>
-	          <li><a href="/admin/campaigns">CAMPANHAS</a></li>
-	          <li><a href="#">EXPLOITS</a></li>
+	          <li><a href="/admin/clients/startemail/">ENVIAR EMAILS</a></li>
+	          <li><a href="/admin/infos/add">ADICIONAR SERV P/ ENVIO</a></li>
+	          <!-- <li><a href="#">SCANS</a></li>
+	          <li><a href="#">GRABS</a></li> -->
+	          <!-- <li><a href="/admin/campaigns">CAMPANHAS</a></li> -->
+	          <!-- <li><a href="#">EXPLOITS</a></li>-->
 	          <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">INFOS</a>
 	          	<ul class="dropdown-menu">
 	            	<?php foreach ($InfosCategories as $InfosCategory): ?>

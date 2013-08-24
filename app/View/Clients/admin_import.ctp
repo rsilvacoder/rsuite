@@ -1,12 +1,7 @@
 <div class="clients form">
-<?php echo $this->Form->create('Import'); ?>
-	<fieldset>
-		<legend><?php echo __('Import Clients'); ?></legend>
-	<?php
-		echo $this->Form->input('emails',array('type' => 'textarea'));
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+	<?php foreach ($arquivos as $arquivo): ?>
+		<?php echo $arquivo; ?></br>
+	<?php endforeach ?>
 </div>
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>

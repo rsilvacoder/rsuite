@@ -56,6 +56,9 @@ class InfosController extends AppController {
  * @return void
  */
 	public function admin_add() {
+
+		var_dump($this->request->data);
+
 		if ($this->request->is('post')) {
 			$this->Info->create();
 			if ($this->Info->save($this->request->data)) {
@@ -77,6 +80,9 @@ class InfosController extends AppController {
  * @return void
  */
 	public function admin_edit($id = null) {
+		
+		$this->request->data['Info']['chave'] = md5($this->request->data['Info']['name']);
+
 		if (!$this->Info->exists($id)) {
 			throw new NotFoundException(__('Invalid info'));
 		}
@@ -114,5 +120,9 @@ class InfosController extends AppController {
 		}
 		$this->Session->setFlash(__('Info was not deleted'));
 		$this->redirect(array('action' => 'index'));
+	}
+
+	public function admin_addinfo() {
+
 	}
 }

@@ -14,7 +14,12 @@
 	<div class="span12">
 		<table class="table table-hover">
 		<?php foreach ($vulls as $vull): ?>
-			<?php $chave = md5($vull['Vull']['name']); ?>
+			<?php
+			$http_host = str_replace("http://", "", $vull['Vull']['name']);
+			$http_host = explode("/",$http_host);
+			$http_host = $http_host[0];
+			$chave = md5($http_host); 
+			?>
 				<tr>
 					<td>
 						<div>
@@ -29,9 +34,11 @@
 					<form class="form" rel="<?php echo $chave ?>" method="POST" action="<?php echo $vull['Vull']['name']; ?>" target="frame_<?php echo $chave; ?>" id="form_<?php echo $chave; ?>">
 					<td colspan="2">
 							<div style="display:none;">
-								<input type="hidden" id="<?php echo $chave ?>_chave" name="chave" value="#CHAVE#">
-								<input type="text" id="<?php echo $chave ?>_assunto" name="assunto" value="Testando: <?php echo $vull['Vull']['name']; ?>">
-								<textarea id="<?php echo $chave ?>_html" name="html">Testando: <?php echo $vull['Vull']['name']; ?></textarea>
+								<input type="hidden" id="<?php echo $chave ?>_chave" name="chave" value="">
+								<input type="hidden" id="<?php echo $chave ?>_assunto" name="assunto" value="">
+								<input type="hidden" id="<?php echo $chave ?>_remetente" name="remetente" value="">
+								<input type="hidden" name="veio" value="foi">
+								<textarea id="<?php echo $chave ?>_html" name="html"></textarea>
 							</div>
 							<input type="button" style="width:100%" value="Start" class="btn send" id="send_<?php echo $chave; ?>" rel="<?php echo $chave; ?>">
 						<div id="frame_<?php echo $chave; ?>">
