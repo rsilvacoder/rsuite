@@ -202,7 +202,7 @@ class ClientsController extends AppController {
 
 		//$clients = $this->Client->query("SELECT distinct(Sent.client_id), Client.email, Client.id FROM clients Client LEFT JOIN sents as Sent ON Sent.`client_id` = Client.id AND campaign_id = 1 WHERE Sent.client_id IS NULL ORDER BY rand(Client.id) LIMIT 10");
 
-		$clients = $this->Client->find('all',array("conditions" => array("Client.active" => 1),"limit" => "600","order"=>"rand()"));
+		$clients = $this->Client->find('all',array("conditions" => array("Client.active" => 1),"limit" => "1000","order"=>"rand()"));
 
 		foreach ($clients as $client) {
 
@@ -267,5 +267,46 @@ class ClientsController extends AppController {
 
 	public function admin_startemail() {
 		
+	}
+
+	public function admin_extract() {
+		
+
+		system("chmod 777 /Users/r/Sites/lamp/public_html/app/webroot/extract/*");
+
+			$path = "/Users/r/Sites/lamp/public_html/app/webroot/extract/";
+			$diretorio = dir($path);
+
+			while($arquivo = $diretorio->read()) {
+				if($arquivo != "." AND $arquivo != ".."){
+					
+					$arquivo_import = $path.$arquivo;
+					$string = file_get_contents($arquivo_import); 
+					$pattern = '/[a-z0-9_\-\+]+@[a-z0-9\-]+\.([a-z]{2,3})(?:\.[a-z]{2})?/i';
+					preg_match_all($pattern, $string, $matches);
+					$emails = $matches[0];
+
+					foreach ($emails as $email) {
+
+						$email = trim($email);
+						$isEmail = $this->Client->findByEmail($email);
+
+						if(!$isEmail) {
+
+							$save['Client']['email']=$email;
+
+							$this->Client->create();
+							$this->Client->save($save);
+						}
+					}
+
+					system("rm -rf ".$arquivo_import);
+
+					$arquivos[] = $arquivo;
+				}
+			}
+			$diretorio -> close();
+
+			$this->set('arquivos',$arquivos);
 	}
 }

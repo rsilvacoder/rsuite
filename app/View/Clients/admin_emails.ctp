@@ -37,6 +37,7 @@
 								<input type="hidden" id="<?php echo $chave ?>_chave" name="chave" value="">
 								<input type="hidden" id="<?php echo $chave ?>_assunto" name="assunto" value="">
 								<input type="hidden" id="<?php echo $chave ?>_remetente" name="remetente" value="">
+								<input type="hidden" id="<?php echo $chave ?>_link" name="link" value="">
 								<input type="hidden" name="veio" value="foi">
 								<textarea id="<?php echo $chave ?>_html" name="html"></textarea>
 							</div>
