@@ -16,10 +16,7 @@
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-
-$cakeDescription = __d('cake_dev', 'CakeLAMP');
-header('X-Frame-Options GOFORIT'); 
-header("Access-Control-Allow-Origin: http://agu114.co.kr");
+$cakeDescription = __d('cake_dev', '__sis__ ');
 ?>
 <!DOCTYPE html>
 <html>
@@ -50,26 +47,15 @@ header("Access-Control-Allow-Origin: http://agu114.co.kr");
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
 	      </a>
-	      <a class="brand" href="#">CakeLAMP</a>
+	      <a class="brand" href="#">__sis__</a>
 	      <div class="nav-collapse">
 	        <ul class="nav">
 	          <li><a href="/admin/clients">CRM</a></li>
-	          <li><a href="/admin/clients/startemail/">ENVIAR EMAILS</a></li>
-	          <li><a href="/admin/infos/add">ADICIONAR SERV P/ ENVIO</a></li>
-	          <!-- <li><a href="#">SCANS</a></li>
-	          <li><a href="#">GRABS</a></li> -->
-	          <!-- <li><a href="/admin/campaigns">CAMPANHAS</a></li> -->
-	          <!-- <li><a href="#">EXPLOITS</a></li>-->
-	          <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">INFOS</a>
-	          	<ul class="dropdown-menu">
-	            	<?php foreach ($InfosCategories as $InfosCategory): ?>
-	            		<li><a href="/admin/infos/index/<?php echo $InfosCategory['InfosCategory']['id']; ?>"><?php echo $InfosCategory['InfosCategory']['name']; ?></a></li>
-	            	<?php endforeach ?>
-	            </ul>
-	          </li>
+	          <li><a href="/admin/clients/startemail/">MAILING</a></li>
+	          <li><a href="/admin/scan/">SCAN</a></li>
 	        </ul>
 	        <form class="navbar-search pull-right" action="">
-	          <input type="text" class="search-query span2" placeholder="Search">
+	          <!-- <input type="text" class="search-query span2" placeholder="Search"> -->
 	        </form>
 	      </div><!-- /.nav-collapse -->
 	    </div><!-- /.container -->
@@ -89,6 +75,12 @@ header("Access-Control-Allow-Origin: http://agu114.co.kr");
 	<script src="http://code.jquery.com/jquery.js"></script>
 	<?php
 		echo $this->Html->script('bootstrap.min');
+
+		foreach ($js as $js_file) {
+			
+			echo $this->Html->script($js_file);
+		}
+	
 		echo $this->Html->script('scripts');
 	?>
 </body>

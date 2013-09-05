@@ -1,14 +1,36 @@
 <div class="row">
-	<div class="span3">1</div>
-	<div class="span3" style="text-align:right">
-		<!-- <span id="totalClients"><?php echo $totalClients; ?></span> /  --><span id="totalClientsSents"></span>
-	</div>
 	<div class="span6">
+
+		<div id="editar">
+			<div>
+				<input type="text" name="assunto" id="assunto" placeholder="Assunto:" value="<?php echo $_POST['assunto'] ?>" style="width:100%">
+			</div>
+			<div>
+				<input type="text" name="remetente" id="remetente" placeholder="Remetente:" value="<?php echo $_POST['remetente'] ?>" style="width:100%">
+			</div>
+			<div>
+				<input type="text" name="link" id="link" placeholder="Link:" value="<?php echo $_POST['link'] ?>" style="width:100%">
+			</div>
+			<div>
+				<textarea name="html" id="html" style="width:100%"><?php echo stripslashes($_POST['html']); ?></textarea>
+			</div>
+			<input type="button" class="btn btn-danger" value="Parar envio!" style="width:100%" onclick="history.back();">
+		</div>
+	</div>
+	<div class="span2" style="text-align:right"><span id="totalClientsSents"></span>
+	</div>
+	<div class="span4">
 		<div class="progress progress-striped active">
 		  <div class="bar" id="totalClientsResult" style="width: 0%;"></div>
 		</div>
 	</div>
 </div> 
+
+<br>
+<br>
+<br>
+<br>
+<br>
 
 <div class="row">
 	<div class="span12">

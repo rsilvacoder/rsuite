@@ -129,14 +129,18 @@ class ClientsController extends AppController {
 
 						$email = trim($email);
 
-						$isEmail = $this->Client->findByEmail($email);
+						if(strlen("email") < 100) {
 
-						if(!$isEmail) {
+							$isEmail = $this->Client->findByEmail($email);
 
-							$save['Client']['email']=$email;
+							if(!$isEmail) {
 
-							$this->Client->create();
-							$this->Client->save($save);
+								$save['Client']['email']=$email;
+								//$save['Client']['domain']=end(explode("@",$email));
+
+								$this->Client->create();
+								$this->Client->save($save);
+							}
 						}
 					}
 
@@ -149,9 +153,12 @@ class ClientsController extends AppController {
 
 			$this->set('arquivos',$arquivos);
 		}
+
+		die('fim');
 	}
 
 	public function admin_emails($campaign_id=0, $page=0) {
+
 
 		$this->Client->query("UPDATE infos SET status = 0");
 
@@ -165,24 +172,13 @@ class ClientsController extends AppController {
 		$this->set('totalClients',$countClients[0][0]['total']);
 		$this->set('totalClientsSents',$countClientsSents[0][0]['total']);
 
-		/*//$vulls[]="http://jejuicecream.com/cgi/board/sendM.php";
-		$vulls[]="http://agu114.co.kr/board/thema/board/sendM.php";
-		$vulls[]="http://aramodu.com/cgi-bin/technote/config/sendM.php";
-		$vulls[]="http://jeju-orange.co.kr/cgi/board/sendM.php";
-		//$vulls[]="http://www.babysale.co.kr/technote/board/sendM.php";
-		//$vulls[]="http://www.kookcheon.co.kr/intra/board/sendM.php";
-		$vulls[]="http://www.jmclinic.co.kr/bbs/board/sendM.php";
-		$vulls[]="http://uk-life.com/cgi/board/sendM.php";
-		//$vulls[]="http://www.transhonpo.jp/progm/board/sendM.php";*/
-		//$vulls[]="http://lamp.dev/frame.php";
-
 		$vulls = $this->Client->query("SELECT Vull.* FROM infos Vull WHERE Vull.infos_category_id=5 AND Vull.active=1");
-
 		$this->set('vulls', $vulls);
 
 		/*$clients = $this->Client->query("SELECT distinct(Sent.client_id), Client.email, Client.id FROM clients Client LEFT JOIN sents as Sent ON Sent.`client_id` = Client.id AND campaign_id = 1 WHERE Sent.client_id IS NULL ORDER BY rand(Client.id) LIMIT 1500");
-
 		$this->set('clients',$clients);*/
+
+		$this->set('js',array('modules/clients/emails.js'));
 	}
 
 	public function admin_sendvull($campaign_id=0) {
@@ -202,7 +198,7 @@ class ClientsController extends AppController {
 
 		//$clients = $this->Client->query("SELECT distinct(Sent.client_id), Client.email, Client.id FROM clients Client LEFT JOIN sents as Sent ON Sent.`client_id` = Client.id AND campaign_id = 1 WHERE Sent.client_id IS NULL ORDER BY rand(Client.id) LIMIT 10");
 
-		$clients = $this->Client->find('all',array("conditions" => array("Client.active" => 1),"limit" => "1000","order"=>"rand()"));
+		$clients = $this->Client->find('all',array("conditions" => array("Client.active" => 1),"limit" => "500","order"=>"rand()"));
 
 		foreach ($clients as $client) {
 
@@ -234,43 +230,30 @@ class ClientsController extends AppController {
 		die();
 	}
 
-	public function admin_grab_netempregos() {
-
-
-		if(!empty($this->request['data']['Grab']['links'])) {
-
-			$links = explode("\n",$this->request['data']['Grab']['links']);
-
-			$this->set('links',$links);
-		}
-
-	}
-
-	public function admin_updateImport($page=0) {
-
-		$emails = $this->Client->find("all", array("limit"=>"6000","page"=>$page));
-
-		foreach ($emails as $email) {
-			
-			$ext = end(explode("@",$email['Client']['email']));
-			
-			/*$save['Client']['id']=$email['Client']['id'];
-			$save['Client']['domain']=$ext;*/
-
-			$this->Client->save($save);
-		}
-
-		echo "Ok";
-
-		die();
-	}
-
 	public function admin_startemail() {
 		
 	}
 
+	public function admin_export($page) {
+
+		$clients = $this->Client->find('all',array(
+			'limit' => 20000,
+			'page' =>$page
+			));
+
+		foreach ($clients as $client) {
+			
+			echo $client['Client']['email']."<br>";
+			system("echo ".$client['Client']['email']." >> emails2_".$page.".txt");
+		}
+
+		die();
+	}
+
 	public function admin_extract() {
 		
+		set_time_limit(0);
+		ini_set('memory_limit', '-1');
 
 		system("chmod 777 /Users/r/Sites/lamp/public_html/app/webroot/extract/*");
 
@@ -294,6 +277,8 @@ class ClientsController extends AppController {
 						if(!$isEmail) {
 
 							$save['Client']['email']=$email;
+							//$save['Client']['domain']=end(explode("@",$email));
+							$save['Client']['active']=1;
 
 							$this->Client->create();
 							$this->Client->save($save);

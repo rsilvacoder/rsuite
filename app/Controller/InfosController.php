@@ -7,6 +7,16 @@ App::uses('AppController', 'Controller');
  */
 class InfosController extends AppController {
 
+	public function _list( $infos_category_id ) {
+
+		$infos = $this->Info->find('all',array(
+			'conditions' => array(
+				'Info.infos_category_id' => 9
+				)
+			));
+		return $infos;
+	} 
+
 /**
  * admin_index method
  *
